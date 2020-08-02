@@ -3,7 +3,6 @@ const errorController = require("./error");
 
 const Image = require("../models/image");
 
-
 module.exports.get_all_images = (req, res, next) => {
     Image.find()
         .select("-__v")
@@ -25,9 +24,7 @@ module.exports.get_image = (req, res, next) => {
         .select("-__v")
         .exec()
         .then((result) => {
-            res.status(200).json(
-                result
-            );
+            res.status(200).json(result);
         })
         .catch((error) => {
             errorController.handle_error(req, res, next, error, 500);
@@ -41,7 +38,7 @@ module.exports.create_image = (req, res, next) => {
         title: req.body.title,
         description: req.body.description,
         createdAt: new Date(),
-        url: req.get("host") + '/upload/images/' + req.file.filename,
+        url: req.get("host") + "/upload/images/" + req.file.filename,
     });
     image
         .save()
@@ -57,7 +54,7 @@ module.exports.create_image = (req, res, next) => {
                 request: {
                     type: "GET",
                     description: "Get the image with specified id.",
-                    url: req.get("host") + "/images/" + result._id,
+                    url: "https://" + req.get("host") + "/images/" + result._id,
                 },
             });
         })
@@ -75,38 +72,36 @@ module.exports.update_image = (req, res, next) => {
     };
     Image.update({ _id: id }, { $set: {...image } })
         .exec()
-        .then(result => {
+        .then((result) => {
             res.status(200).json({
                 message: "Image updated successfully.",
                 request: {
-                    type: 'GET',
+                    type: "GET",
                     description: "Get the image with specified id.",
-                    url: req.get('host') + '/images/' + id
-                }
-            })
+                    url: req.get("host") + "/images/" + id,
+                },
+            });
         })
-        .catch(error => {
+        .catch((error) => {
             errorController.handle_error(req, res, next, error, 500);
         });
-
-
 };
 
 module.exports.delete_image = (req, res, next) => {
     const id = req.params.imageId;
     Image.remove({ _id: id })
         .exec()
-        .then(result => {
+        .then((result) => {
             res.status(200).json({
                 message: "Image deleted successfully.",
                 request: {
-                    type: 'GET',
+                    type: "GET",
                     description: "Get the  all the images.",
-                    url: req.get('host') + '/images'
-                }
-            })
+                    url: req.get("host") + "/images",
+                },
+            });
         })
-        .catch(error => {
+        .catch((error) => {
             errorController.handle_error(req, res, next, error, 500);
         });
 };
