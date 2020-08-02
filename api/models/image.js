@@ -10,6 +10,7 @@ const imageSchema = new mongoose.Schema({
         default: "",
     },
     createdAt: String,
+    imagename: String,
     url: String,
 });
 

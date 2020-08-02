@@ -14,7 +14,7 @@ dotenv.config();
 
 const mongoUri = process.env.ENV === 'DEV' ? process.env.MONGO_DEV_URI : process.env.MONGO_PROD_URI;
 
-mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }, (err) => {
     if (err) {
         console.log(err);
     } else {

@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const errorController = require("./error");
+const fs = require("fs");
+var path = require("path");
 
 const Image = require("../models/image");
 
@@ -38,6 +40,7 @@ module.exports.create_image = (req, res, next) => {
         title: req.body.title,
         description: req.body.description,
         createdAt: new Date(),
+        imagename: req.file.filename,
         url: req.get("host") + "/upload/images/" + req.file.filename,
     });
     image
@@ -89,16 +92,27 @@ module.exports.update_image = (req, res, next) => {
 
 module.exports.delete_image = (req, res, next) => {
     const id = req.params.imageId;
-    Image.remove({ _id: id })
+    Image.findOneAndRemove({ _id: id })
         .exec()
         .then((result) => {
-            res.status(200).json({
-                message: "Image deleted successfully.",
-                request: {
-                    type: "GET",
-                    description: "Get the  all the images.",
-                    url: req.get("host") + "/images",
-                },
+            const imgPath =
+                path.dirname(require.main.filename) +
+                "/upload/images/" +
+                result.imagename;
+
+            fs.unlink(imgPath, (err) => {
+                if (err) {
+                    throw err;
+                }
+                res.status(200).json({
+                    message: "Image deleted successfully.",
+                    imageDeleted: result,
+                    request: {
+                        type: "GET",
+                        description: "Get the  all the images.",
+                        url: "https://" + req.get("host") + "/images",
+                    },
+                });
             });
         })
         .catch((error) => {
