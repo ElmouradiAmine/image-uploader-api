@@ -47,9 +47,28 @@ module.exports.create_image = (req, res, next) => {
 };
 
 module.exports.update_image = (req, res, next) => {
-    res.status(200).json({
-        message: "PUT /images",
-    });
+    const id = req.params.imageId;
+    const image = {
+        title: req.body.title,
+        description: req.body.description,
+    };
+    Image.update({ _id: id }, { $set: {...image } })
+        .exec()
+        .then(result => {
+            res.status(200).json({
+                message: "Image updated successfully.",
+                request: {
+                    type: 'GET',
+                    description: "Get the image with specified id.",
+                    url: req.get('host') + '/images/' + id
+                }
+            })
+        })
+        .catch(error => {
+            errorController.handle_error(req, res, next, error, 500);
+        });
+
+
 };
 
 module.exports.delete_image = (req, res, next) => {

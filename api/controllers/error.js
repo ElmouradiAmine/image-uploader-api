@@ -6,7 +6,8 @@ module.exports.handle_error = (req, res, next, error, code) => {
         })
     } else {
         res.status(500).json({
-            message: 'An error has occured'
+            message: 'An error has occured',
+            error: 'Route not found.'
         });
     }
 

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const imageRoute = require('./api/routes/images');
 const errorRoute = require('./api/routes/error');
 
@@ -23,6 +24,7 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true }, 
 
 
 app.use(morgan('dev'));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/images', imageRoute);
