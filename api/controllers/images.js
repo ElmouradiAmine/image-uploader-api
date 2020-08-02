@@ -17,6 +17,21 @@ module.exports.get_all_images = (req, res, next) => {
         });
 };
 
+module.exports.get_image = (req, res, next) => {
+    const id = req.params.imageId;
+    Image.findById(id)
+        .select("-__v")
+        .exec()
+        .then((result) => {
+            res.status(200).json(
+                result
+            );
+        })
+        .catch((error) => {
+            errorController.handle_error(req, res, next, error, 500);
+        });
+};
+
 module.exports.create_image = (req, res, next) => {
     const image = new Image({
         title: req.body.title,

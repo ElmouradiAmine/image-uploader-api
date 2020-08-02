@@ -3,9 +3,12 @@ const mongoose = require('mongoose');
 const imageSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        default: "",
     },
-    description: String,
+    description: {
+        type: String,
+        default: "",
+    },
     createdAt: String,
     url: String,
 });

@@ -6,6 +6,7 @@ const imagesController = require('../controllers/images')
 //This router is prefixed by /images
 router.get('/', imagesController.get_all_images);
 router.post('/', imagesController.create_image);
+router.get('/:imageId', imagesController.get_image);
 router.patch('/:imageId', imagesController.update_image);
 router.delete('/:imageId', imagesController.delete_image);
 
