@@ -41,7 +41,7 @@ module.exports.create_image = (req, res, next) => {
         description: req.body.description,
         createdAt: new Date(),
         imagename: req.file.filename,
-        url: req.get("host") + "/upload/images/" + req.file.filename,
+        url: "https://" + req.get("host") + "/upload/images/" + req.file.filename,
     });
     image
         .save()
