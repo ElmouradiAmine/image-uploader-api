@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const imageRoute = require('./api/routes/images');
+const errorRoute = require('./api/routes/error');
 
 
 const app = express();
@@ -25,5 +26,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/images', imageRoute);
+
+app.use(errorRoute);
 
 module.exports = app;
