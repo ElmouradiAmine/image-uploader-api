@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const errorController = require("./error");
+
 const Image = require("../models/image");
+
 
 module.exports.get_all_images = (req, res, next) => {
     Image.find()
@@ -33,10 +35,13 @@ module.exports.get_image = (req, res, next) => {
 };
 
 module.exports.create_image = (req, res, next) => {
+    console.log(req.body.image);
+    console.log(req.file);
     const image = new Image({
         title: req.body.title,
         description: req.body.description,
         createdAt: new Date(),
+        url: req.get("host") + '/upload/images/' + req.file.filename,
     });
     image
         .save()
@@ -47,6 +52,7 @@ module.exports.create_image = (req, res, next) => {
                     _id: result._id,
                     title: result.title,
                     createdAt: result.createdAt,
+                    url: result.url,
                 },
                 request: {
                     type: "GET",

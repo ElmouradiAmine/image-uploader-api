@@ -25,10 +25,10 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true }, 
 
 app.use(morgan('dev'));
 app.use(cors());
+app.use('/upload/images', express.static('upload/images'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/images', imageRoute);
 
 app.use(errorRoute);
-
 module.exports = app;
