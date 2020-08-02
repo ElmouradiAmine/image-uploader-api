@@ -72,7 +72,20 @@ module.exports.update_image = (req, res, next) => {
 };
 
 module.exports.delete_image = (req, res, next) => {
-    res.status(200).json({
-        message: "DELETE /images",
-    });
+    const id = req.params.imageId;
+    Image.remove({ _id: id })
+        .exec()
+        .then(result => {
+            res.status(200).json({
+                message: "Image deleted successfully.",
+                request: {
+                    type: 'GET',
+                    description: "Get the  all the images.",
+                    url: req.get('host') + '/images'
+                }
+            })
+        })
+        .catch(error => {
+            errorController.handle_error(req, res, next, error, 500);
+        });
 };
