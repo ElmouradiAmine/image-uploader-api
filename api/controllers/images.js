@@ -51,6 +51,7 @@ module.exports.create_image = (req, res, next) => {
                 imageCreated: {
                     _id: result._id,
                     title: result.title,
+                    description: result.description,
                     createdAt: result.createdAt,
                     url: result.url,
                 },
