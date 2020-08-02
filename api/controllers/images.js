@@ -1,11 +1,20 @@
 const mongoose = require("mongoose");
-const errorController = require('./error');
+const errorController = require("./error");
 const Image = require("../models/image");
 
 module.exports.get_all_images = (req, res, next) => {
-    res.status(200).json({
-        message: "Get /images",
-    });
+    Image.find()
+        .select("-__v")
+        .exec()
+        .then((docs) => {
+            res.status(200).json({
+                count: docs.length,
+                images: docs,
+            });
+        })
+        .catch((error) => {
+            errorController.handle_error(req, res, next, error, 500);
+        });
 };
 
 module.exports.create_image = (req, res, next) => {
@@ -25,17 +34,16 @@ module.exports.create_image = (req, res, next) => {
                     createdAt: result.createdAt,
                 },
                 request: {
-                    type: 'GET',
-                    description: 'Get the image with specified id.',
-                    url: req.get('host') + '/images/' + result._id
-                }
+                    type: "GET",
+                    description: "Get the image with specified id.",
+                    url: req.get("host") + "/images/" + result._id,
+                },
             });
         })
         .catch((error) => {
+            //A validation error
             errorController.handle_error(req, res, next, error, 400);
         });
-
-
 };
 
 module.exports.update_image = (req, res, next) => {
